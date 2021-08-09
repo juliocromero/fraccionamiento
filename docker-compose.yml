@@ -1,0 +1,30 @@
+version: "3.0"
+services:
+  server:
+    image: apquinit/adonisjs
+    container_name: "fraccionamiento_api_dev"
+    restart: always
+    networks:
+      - net_dev
+    volumes:
+      - ./api:/opt/fraccionamiento
+    working_dir: "/opt/fraccionamiento"
+    command: ["bash", "run.sh"]
+  proxy:
+    image: nginx
+    container_name: "fraccionamiento_proxy_dev"
+    volumes:
+      - ./proxy:/opt/fraccionamiento
+    working_dir: "/opt/fraccionamiento"
+    restart: always
+    ports:
+      - "443:443"
+    volumes:
+      - ./proxy:/etc/nginx/conf.d
+    depends_on:
+      - server
+    networks:
+      - net_dev
+networks:
+  net_dev:
+    driver: bridge

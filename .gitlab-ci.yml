@@ -1,0 +1,10 @@
+stages:
+  - development
+test:
+  stage: development
+  tags:
+    - dev
+  script:
+    - docker-compose up -d
+  only:
+    - desarrollo
